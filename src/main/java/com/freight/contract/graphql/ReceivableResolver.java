@@ -1,5 +1,6 @@
 package com.freight.contract.graphql;
 
+import com.freight.contract.entity.Contract;
 import com.freight.contract.entity.Receivable;
 import com.freight.contract.entity.ReceivableStatus;
 import com.freight.contract.service.ReceivableService;
@@ -44,13 +45,33 @@ public class ReceivableResolver {
     }
     
     @MutationMapping
-    public Receivable createReceivable(@Argument ReceivableInput input) {
+    public Receivable createReceivable(@Argument Long contractId, @Argument String customerName, 
+                                     @Argument java.math.BigDecimal amount, @Argument String currency,
+                                     @Argument java.time.LocalDateTime dueDate, @Argument String status) {
         Receivable receivable = new Receivable();
-        receivable.setCustomerName(input.getCustomerName());
-        receivable.setAmount(input.getAmount());
-        receivable.setCurrency(input.getCurrency());
-        receivable.setDueDate(input.getDueDate());
-        receivable.setStatus(ReceivableStatus.valueOf(input.getStatus()));
+        
+        // 设置关联的合同
+        Contract contract = new Contract();
+        contract.setId(contractId);
+        receivable.setContract(contract);
+        
+        // 添加空值检查和默认值
+        receivable.setCustomerName(customerName != null ? customerName : "未知客户");
+        receivable.setAmount(amount != null ? amount : java.math.BigDecimal.ZERO);
+        receivable.setCurrency(currency != null ? currency : "CNY");
+        receivable.setDueDate(dueDate);
+        
+        // 安全处理状态
+        String statusStr = status;
+        if (statusStr == null || statusStr.trim().isEmpty()) {
+            statusStr = "PENDING";
+        }
+        try {
+            receivable.setStatus(ReceivableStatus.valueOf(statusStr));
+        } catch (IllegalArgumentException e) {
+            receivable.setStatus(ReceivableStatus.PENDING);
+        }
+        
         return receivableService.createReceivable(receivable);
     }
     
@@ -71,7 +92,7 @@ public class ReceivableResolver {
     }
     
     @SchemaMapping(typeName = "Contract", field = "receivables")
-    public List<Receivable> getReceivablesByContract(Long contractId) {
-        return receivableService.getReceivablesByContractId(contractId);
+    public List<Receivable> getReceivablesByContract(Contract contract) {
+        return receivableService.getReceivablesByContractId(contract.getId());
     }
 }

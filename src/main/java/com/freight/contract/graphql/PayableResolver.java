@@ -1,5 +1,6 @@
 package com.freight.contract.graphql;
 
+import com.freight.contract.entity.Contract;
 import com.freight.contract.entity.Payable;
 import com.freight.contract.entity.PayableStatus;
 import com.freight.contract.service.PayableService;
@@ -44,13 +45,33 @@ public class PayableResolver {
     }
     
     @MutationMapping
-    public Payable createPayable(@Argument PayableInput input) {
+    public Payable createPayable(@Argument Long contractId, @Argument String supplierName,
+                               @Argument java.math.BigDecimal amount, @Argument String currency,
+                               @Argument java.time.LocalDateTime dueDate, @Argument String status) {
         Payable payable = new Payable();
-        payable.setSupplierName(input.getSupplierName());
-        payable.setAmount(input.getAmount());
-        payable.setCurrency(input.getCurrency());
-        payable.setDueDate(input.getDueDate());
-        payable.setStatus(PayableStatus.valueOf(input.getStatus()));
+        
+        // 设置关联的合同
+        Contract contract = new Contract();
+        contract.setId(contractId);
+        payable.setContract(contract);
+        
+        // 添加空值检查和默认值
+        payable.setSupplierName(supplierName != null ? supplierName : "未知供应商");
+        payable.setAmount(amount != null ? amount : java.math.BigDecimal.ZERO);
+        payable.setCurrency(currency != null ? currency : "CNY");
+        payable.setDueDate(dueDate);
+        
+        // 安全处理状态
+        String statusStr = status;
+        if (statusStr == null || statusStr.trim().isEmpty()) {
+            statusStr = "PENDING";
+        }
+        try {
+            payable.setStatus(PayableStatus.valueOf(statusStr));
+        } catch (IllegalArgumentException e) {
+            payable.setStatus(PayableStatus.PENDING);
+        }
+        
         return payableService.createPayable(payable);
     }
     
@@ -71,7 +92,7 @@ public class PayableResolver {
     }
     
     @SchemaMapping(typeName = "Contract", field = "payables")
-    public List<Payable> getPayablesByContract(Long contractId) {
-        return payableService.getPayablesByContractId(contractId);
+    public List<Payable> getPayablesByContract(Contract contract) {
+        return payableService.getPayablesByContractId(contract.getId());
     }
 }

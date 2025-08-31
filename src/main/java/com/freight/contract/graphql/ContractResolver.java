@@ -10,6 +10,8 @@ import org.springframework.graphql.data.method.annotation.MutationMapping;
 import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.SchemaMapping;
 
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Controller
@@ -39,30 +41,57 @@ public class ContractResolver {
     }
     
     @MutationMapping
-    public Contract createContract(@Argument ContractInput input) {
+    public Contract createContract(
+            @Argument String businessNo,
+            @Argument String customerName,
+            @Argument String billNo,
+            @Argument String salesman,
+            @Argument BigDecimal amount,
+            @Argument String currency,
+            @Argument String status,
+            @Argument LocalDateTime contractDate,
+            @Argument LocalDateTime deliveryDate,
+            @Argument String description) {
+        
         Contract contract = new Contract();
-        contract.setBusinessNo(input.getBusinessNo());
-        contract.setCustomerName(input.getCustomerName());
-        contract.setSalesman(input.getSalesman());
-        contract.setAmount(input.getAmount());
-        contract.setCurrency(input.getCurrency());
-        contract.setStatus(ContractStatus.valueOf(input.getStatus()));
-        contract.setContractDate(input.getContractDate());
-        contract.setDeliveryDate(input.getDeliveryDate());
+        contract.setBusinessNo(businessNo);
+        contract.setCustomerName(customerName);
+        contract.setBillNo(billNo);
+        contract.setSalesman(salesman);
+        contract.setAmount(amount);
+        contract.setCurrency(currency);
+        contract.setStatus(ContractStatus.valueOf(status));
+        contract.setContractDate(contractDate);
+        contract.setDeliveryDate(deliveryDate);
+        contract.setDescription(description);
         return contractService.createContract(contract);
     }
     
     @MutationMapping
-    public Contract updateContract(@Argument Long id, @Argument ContractInput input) {
+    public Contract updateContract(
+            @Argument Long id,
+            @Argument String businessNo,
+            @Argument String customerName,
+            @Argument String billNo,
+            @Argument String salesman,
+            @Argument BigDecimal amount,
+            @Argument String currency,
+            @Argument String status,
+            @Argument LocalDateTime contractDate,
+            @Argument LocalDateTime deliveryDate,
+            @Argument String description) {
+        
         Contract contractDetails = new Contract();
-        contractDetails.setBusinessNo(input.getBusinessNo());
-        contractDetails.setCustomerName(input.getCustomerName());
-        contractDetails.setSalesman(input.getSalesman());
-        contractDetails.setAmount(input.getAmount());
-        contractDetails.setCurrency(input.getCurrency());
-        contractDetails.setStatus(ContractStatus.valueOf(input.getStatus()));
-        contractDetails.setContractDate(input.getContractDate());
-        contractDetails.setDeliveryDate(input.getDeliveryDate());
+        contractDetails.setBusinessNo(businessNo);
+        contractDetails.setCustomerName(customerName);
+        contractDetails.setBillNo(billNo);
+        contractDetails.setSalesman(salesman);
+        contractDetails.setAmount(amount);
+        contractDetails.setCurrency(currency);
+        contractDetails.setStatus(ContractStatus.valueOf(status));
+        contractDetails.setContractDate(contractDate);
+        contractDetails.setDeliveryDate(deliveryDate);
+        contractDetails.setDescription(description);
         return contractService.updateContract(id, contractDetails).orElse(null);
     }
     
