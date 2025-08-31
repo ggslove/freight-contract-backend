@@ -1,0 +1,29 @@
+-- 初始化测试数据
+
+-- 插入测试用户
+INSERT INTO users (username, email, password, role, status, created_at, updated_at) VALUES
+('admin', 'admin@freight.com', '$2a$10$Xv1jWsPq8gK3Q5K8K8K8K8K8K8K8K8K8K8K8K8K8K8K8K8K8K8K8K', 'ADMIN', 'ENABLED', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+('manager', 'manager@freight.com', '$2a$10$Xv1jWsPq8gK3Q5K8K8K8K8K8K8K8K8K8K8K8K8K8K8K8K8K8K8K', 'MANAGER', 'ENABLED', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+('finance', 'finance@freight.com', '$2a$10$Xv1jWsPq8gK3Q5K8K8K8K8K8K8K8K8K8K8K8K8K8K8K8K8K8K8K', 'FINANCE', 'ENABLED', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+
+-- 插入测试合同
+INSERT INTO contract (business_no, customer_name, bill_no, salesman, amount, currency, status, contract_date, delivery_date, description, created_at, updated_at) VALUES
+('CTR-2024-001', 'ABC Logistics Corp', 'BL-2024-001', 'John Smith', 50000.00, 'USD', 'PROCESSING', '2024-01-15', '2024-02-15', 'International freight shipment', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+('CTR-2024-002', 'XYZ Transport Ltd', 'BL-2024-002', 'Jane Doe', 75000.00, 'EUR', 'PENDING', '2024-01-20', '2024-03-01', 'European route cargo', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+('CTR-2024-003', 'Global Shipping Inc', 'BL-2024-003', 'Mike Johnson', 100000.00, 'USD', 'COMPLETED', '2024-01-10', '2024-01-25', 'Transatlantic container shipment', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+
+-- 插入测试应收
+INSERT INTO receivable (contract_id, customer_name, amount, currency, due_date, status, created_at, updated_at) VALUES
+(1, 'ABC Logistics Corp', 25000.00, 'USD', '2024-02-01', 'PENDING', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+(1, 'ABC Logistics Corp', 25000.00, 'USD', '2024-02-15', 'PENDING', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+(2, 'XYZ Transport Ltd', 37500.00, 'EUR', '2024-02-20', 'PENDING', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+(2, 'XYZ Transport Ltd', 37500.00, 'EUR', '2024-03-05', 'PENDING', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+(3, 'Global Shipping Inc', 50000.00, 'USD', '2024-01-20', 'COMPLETED', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+(3, 'Global Shipping Inc', 50000.00, 'USD', '2024-02-05', 'COMPLETED', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+
+-- 插入测试应付
+INSERT INTO payable (contract_id, supplier_name, amount, currency, due_date, status, created_at, updated_at) VALUES
+(1, 'Port Authority', 10000.00, 'USD', '2024-01-25', 'PENDING', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+(1, 'Customs Broker', 5000.00, 'USD', '2024-01-30', 'PENDING', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+(2, 'European Port', 20000.00, 'EUR', '2024-02-15', 'PENDING', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+(3, 'Shipping Line', 30000.00, 'USD', '2024-01-15', 'COMPLETED', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
