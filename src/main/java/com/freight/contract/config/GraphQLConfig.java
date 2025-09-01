@@ -1,7 +1,6 @@
 package com.freight.contract.config;
 
 import graphql.scalars.ExtendedScalars;
-import graphql.scalars.datetime.DateTimeScalar;
 import graphql.schema.GraphQLScalarType;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
