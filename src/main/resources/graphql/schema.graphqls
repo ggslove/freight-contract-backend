@@ -45,9 +45,12 @@ type Payable {
 type User {
   id: ID!
   username: String!
+  realName: String
   email: String!
+  phone: String
   role: Role!
   status: UserStatus!
+  lastLogin: DateTime
   createdAt: DateTime!
   updatedAt: DateTime!
 }
@@ -183,7 +186,9 @@ type Mutation {
   # User mutations
   createUser(
     username: String!
+    realName: String
     email: String!
+    phone: String
     password: String!
     role: Role!
     status: UserStatus!
@@ -192,7 +197,9 @@ type Mutation {
   updateUser(
     id: ID!
     username: String
+    realName: String
     email: String
+    phone: String
     password: String
     role: Role
     status: UserStatus

@@ -32,16 +32,17 @@ public class UserResolver {
     }
     
     @MutationMapping
-    public User createUser(@Argument String username, @Argument String email,
-                         @Argument String password, @Argument String role,
+    public User createUser(@Argument String username, @Argument String realName, @Argument String email,
+                         @Argument String phone, @Argument String password, @Argument String role,
                          @Argument String status) {
         User user = new User();
         user.setUsername(username);
+        user.setRealName(realName);
         user.setEmail(email);
-        user.setPassword(password);
+        user.setPhone(phone);
         user.setRole(com.freight.contract.entity.Role.valueOf(role));
         user.setStatus(com.freight.contract.entity.UserStatus.valueOf(status));
-        return userService.createUser(user);
+        return userService.createUser(user, password);
     }
     
     @MutationMapping

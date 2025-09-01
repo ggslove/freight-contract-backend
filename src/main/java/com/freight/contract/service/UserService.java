@@ -42,6 +42,18 @@ public class UserService {
         return userRepository.save(user);
     }
     
+    public User createUser(User user, String rawPassword) {
+        if (userRepository.existsByUsername(user.getUsername())) {
+            throw new RuntimeException("Username already exists: " + user.getUsername());
+        }
+        if (userRepository.existsByEmail(user.getEmail())) {
+            throw new RuntimeException("Email already exists: " + user.getEmail());
+        }
+        
+        user.setPassword(passwordEncoder.encode(rawPassword));
+        return userRepository.save(user);
+    }
+    
     public User updateUser(Long id, User userDetails) {
         return userRepository.findById(id)
                 .map(user -> {
