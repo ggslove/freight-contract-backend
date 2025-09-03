@@ -1,0 +1,6 @@
+extend type Query {
+    # Receivable queries
+    receivables: [Receivable!]!
+    receivable(id: ID!): Receivable
+    receivablesByContract(contractId: ID!): [Receivable!]!
+}

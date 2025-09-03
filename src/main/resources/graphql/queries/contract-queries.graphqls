@@ -1,0 +1,6 @@
+extend type Query {
+  # Contract queries
+  contracts: [Contract!]!
+  contract(id: ID!): Contract
+  contractsByStatus(status: ContractStatus!): [Contract!]!
+}

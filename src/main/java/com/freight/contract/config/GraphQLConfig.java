@@ -2,9 +2,9 @@ package com.freight.contract.config;
 
 import graphql.scalars.ExtendedScalars;
 import graphql.schema.GraphQLScalarType;
+import org.springframework.graphql.execution.RuntimeWiringConfigurer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.graphql.execution.RuntimeWiringConfigurer;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;

@@ -1,0 +1,12 @@
+type User {
+    id: ID!
+    username: String!
+    realName: String
+    email: String!
+    phone: String
+    role: Role!
+    status: UserStatus!
+    lastLogin: DateTime
+    createdAt: DateTime!
+    updatedAt: DateTime!
+}

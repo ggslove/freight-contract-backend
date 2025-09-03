@@ -1,0 +1,11 @@
+type Receivable {
+    id: ID!
+    contract: Contract!
+    customerName: String!
+    amount: Float!
+    currency: String!
+    dueDate: DateTime
+    status: ReceivableStatus!
+    createdAt: DateTime!
+    updatedAt: DateTime!
+}

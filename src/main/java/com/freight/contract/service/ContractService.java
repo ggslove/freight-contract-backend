@@ -40,6 +40,7 @@ public class ContractService {
     }
     
     public Contract createContract(Contract contract) {
+        // 确保使用save方法并返回保存后的实体
         return contractRepository.save(contract);
     }
     

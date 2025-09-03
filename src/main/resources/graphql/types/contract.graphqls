@@ -1,0 +1,17 @@
+type Contract {
+  id: ID!
+  businessNo: String!
+  customerName: String!
+  billNo: String
+  salesman: String
+  amount: Float!
+  currency: String!
+  status: ContractStatus!
+  contractDate: DateTime
+  deliveryDate: DateTime
+  description: String
+  receivables: [Receivable!]!
+  payables: [Payable!]!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}

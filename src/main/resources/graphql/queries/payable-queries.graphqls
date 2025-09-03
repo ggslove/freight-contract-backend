@@ -1,0 +1,6 @@
+extend type Query {
+    # Payable queries
+    payables: [Payable!]!
+    payable(id: ID!): Payable
+    payablesByContract(contractId: ID!): [Payable!]!
+}

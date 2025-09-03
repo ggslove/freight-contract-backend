@@ -1,0 +1,6 @@
+enum ReceivableStatus {
+    PENDING
+    PARTIAL
+    COMPLETED
+    OVERDUE
+}

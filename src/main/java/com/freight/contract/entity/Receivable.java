@@ -16,8 +16,12 @@ public class Receivable {
     private Long id;
     
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "contract_id", nullable = false)
+    @JoinColumn(name = "contract_id") // 确保数据库字段映射正确
     private Contract contract;
+    
+    // Getter和Setter
+    public Contract getContract() { return contract; }
+    public void setContract(Contract contract) { this.contract = contract; }
     
     @Column(name = "customer_name", nullable = false)
     private String customerName;

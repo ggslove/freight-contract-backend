@@ -1,0 +1,22 @@
+type Mutation {
+    # Receivable mutations
+    createReceivable(
+        contractId: ID!
+        customerName: String!
+        amount: Float!
+        currency: String!
+        dueDate: DateTime
+        status: ReceivableStatus!
+    ): Receivable!
+
+    updateReceivable(
+        id: ID!
+        customerName: String
+        amount: Float
+        currency: String
+        dueDate: DateTime
+        status: ReceivableStatus
+    ): Receivable!
+
+    deleteReceivable(id: ID!): Boolean!
+}

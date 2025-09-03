@@ -67,7 +67,9 @@ public class UserService {
                     }
                     
                     user.setUsername(userDetails.getUsername());
+                    user.setRealName(userDetails.getRealName());
                     user.setEmail(userDetails.getEmail());
+                    user.setPhone(userDetails.getPhone());
                     user.setRole(userDetails.getRole());
                     user.setStatus(userDetails.getStatus());
                     if (userDetails.getPassword() != null && !userDetails.getPassword().isEmpty()) {

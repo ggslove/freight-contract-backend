@@ -13,7 +13,7 @@ import java.util.List;
 public class Contract {
     
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // 或其他合适的生成策略
     private Long id;
     
     @Column(name = "business_no", unique = true, nullable = false)

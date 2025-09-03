@@ -1,0 +1,11 @@
+type Payable {
+    id: ID!
+    contract: Contract!
+    supplierName: String!
+    amount: Float!
+    currency: String!
+    dueDate: DateTime
+    status: PayableStatus!
+    createdAt: DateTime!
+    updatedAt: DateTime!
+}
