@@ -7,34 +7,28 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "payable")
+@Table(name = "currency")
 @Data
-public class Payable {
+public class Currency {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "contract_id", nullable = false)
-    private Contract contract;
+    @Column(name = "code", unique = true, nullable = false, length = 3)
+    private String code;
     
-    @Column(name = "supplier_name", nullable = false)
-    private String supplierName;
+    @Column(name = "name", nullable = false)
+    private String name;
     
-    @Column(name = "amount", nullable = false, precision = 15, scale = 2)
-    private BigDecimal amount;
+    @Column(name = "symbol", nullable = false, length = 10)
+    private String symbol;
     
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "currency_id", nullable = false)
-    private Currency currency;
+    @Column(name = "exchange_rate", nullable = false, precision = 10, scale = 4)
+    private BigDecimal exchangeRate;
     
-    @Column(name = "due_date")
-    private LocalDateTime dueDate;
-    
-    @Enumerated(EnumType.STRING)
-    @Column(name = "status", nullable = false)
-    private PayableStatus status;
+    @Column(name = "is_active", nullable = false)
+    private Boolean isActive = true;
     
     @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;

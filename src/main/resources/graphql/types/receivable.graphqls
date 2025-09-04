@@ -3,7 +3,7 @@ type Receivable {
     contract: Contract!
     customerName: String!
     amount: Float!
-    currency: String!
+    currency: Currency!
     dueDate: DateTime
     status: ReceivableStatus!
     createdAt: DateTime!

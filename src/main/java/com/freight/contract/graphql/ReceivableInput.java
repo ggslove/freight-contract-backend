@@ -6,7 +6,7 @@ import java.time.LocalDateTime;
 public class ReceivableInput {
     private String customerName;
     private BigDecimal amount;
-    private String currency;
+    private String currencyCode;
     private LocalDateTime dueDate;
     private String status;
     
@@ -26,12 +26,12 @@ public class ReceivableInput {
         this.amount = amount;
     }
     
-    public String getCurrency() {
-        return currency;
+    public String getCurrencyCode() {
+        return currencyCode;
     }
     
-    public void setCurrency(String currency) {
-        this.currency = currency;
+    public void setCurrencyCode(String currencyCode) {
+        this.currencyCode = currencyCode;
     }
     
     public LocalDateTime getDueDate() {

@@ -4,7 +4,6 @@ type User {
     realName: String
     email: String!
     phone: String
-    role: Role!
     status: UserStatus!
     lastLogin: DateTime
     createdAt: DateTime!

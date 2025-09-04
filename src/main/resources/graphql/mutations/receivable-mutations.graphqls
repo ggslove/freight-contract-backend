@@ -4,7 +4,7 @@ type Mutation {
         contractId: ID!
         customerName: String!
         amount: Float!
-        currency: String!
+        currencyCode: String!
         dueDate: DateTime
         status: ReceivableStatus!
     ): Receivable!
@@ -13,7 +13,7 @@ type Mutation {
         id: ID!
         customerName: String
         amount: Float
-        currency: String
+        currencyCode: String
         dueDate: DateTime
         status: ReceivableStatus
     ): Receivable!

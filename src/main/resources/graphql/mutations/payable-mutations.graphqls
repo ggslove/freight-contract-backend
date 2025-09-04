@@ -4,7 +4,7 @@ extend type  Mutation {
         contractId: ID!
         supplierName: String!
         amount: Float!
-        currency: String!
+        currencyCode: String!
         dueDate: DateTime
         status: PayableStatus!
     ): Payable!
@@ -13,7 +13,7 @@ extend type  Mutation {
         id: ID!
         supplierName: String
         amount: Float
-        currency: String
+        currencyCode: String
         dueDate: DateTime
         status: PayableStatus
     ): Payable!

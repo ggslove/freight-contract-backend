@@ -6,7 +6,6 @@ extend type Mutation {
     billNo: String
     salesman: String
     amount: Float!
-    currency: String!
     status: ContractStatus!
     contractDate: DateTime
     deliveryDate: DateTime
@@ -20,7 +19,7 @@ extend type Mutation {
     billNo: String
     salesman: String
     amount: Float
-    currency: String
+    currencyCode: String
     status: ContractStatus
     contractDate: DateTime
     deliveryDate: DateTime

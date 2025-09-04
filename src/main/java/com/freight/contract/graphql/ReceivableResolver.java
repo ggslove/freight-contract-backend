@@ -1,6 +1,7 @@
 package com.freight.contract.graphql;
 
 import com.freight.contract.entity.Contract;
+import com.freight.contract.entity.Currency;
 import com.freight.contract.entity.Receivable;
 import com.freight.contract.entity.ReceivableStatus;
 import com.freight.contract.service.ReceivableService;
@@ -46,7 +47,7 @@ public class ReceivableResolver {
     
     @MutationMapping
     public Receivable createReceivable(@Argument Long contractId, @Argument String customerName, 
-                                     @Argument java.math.BigDecimal amount, @Argument String currency,
+                                     @Argument java.math.BigDecimal amount, @Argument String currencyCode,
                                      @Argument java.time.LocalDateTime dueDate, @Argument String status) {
         Receivable receivable = new Receivable();
         
@@ -55,10 +56,14 @@ public class ReceivableResolver {
         contract.setId(contractId);
         receivable.setContract(contract);
         
+        // 设置币种
+        Currency currency = new Currency();
+        currency.setCode(currencyCode != null ? currencyCode : "CNY");
+        receivable.setCurrency(currency);
+        
         // 添加空值检查和默认值
         receivable.setCustomerName(customerName != null ? customerName : "未知客户");
         receivable.setAmount(amount != null ? amount : java.math.BigDecimal.ZERO);
-        receivable.setCurrency(currency != null ? currency : "CNY");
         receivable.setDueDate(dueDate);
         
         // 安全处理状态
@@ -80,7 +85,12 @@ public class ReceivableResolver {
         Receivable receivableDetails = new Receivable();
         receivableDetails.setCustomerName(input.getCustomerName());
         receivableDetails.setAmount(input.getAmount());
-        receivableDetails.setCurrency(input.getCurrency());
+        
+        // 设置币种
+        Currency currency = new Currency();
+        currency.setCode(input.getCurrencyCode());
+        receivableDetails.setCurrency(currency);
+        
         receivableDetails.setDueDate(input.getDueDate());
         receivableDetails.setStatus(ReceivableStatus.valueOf(input.getStatus()));
         return receivableService.updateReceivable(id, receivableDetails).orElse(null);

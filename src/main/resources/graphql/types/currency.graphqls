@@ -1,0 +1,18 @@
+type Currency {
+    id: ID!
+    code: String!
+    name: String!
+    symbol: String!
+    exchangeRate: Float!
+    isActive: Boolean!
+    createdAt: DateTime!
+    updatedAt: DateTime!
+}
+
+input CurrencyInput {
+    code: String!
+    name: String!
+    symbol: String!
+    exchangeRate: Float!
+    isActive: Boolean
+}

@@ -1,25 +1,25 @@
-extend  type Mutation {
-    # User mutations
-    createUser(
-        username: String!
-        realName: String
-        email: String!
-        phone: String
-        password: String!
-        role: Role!
-        status: UserStatus!
-    ): User!
+extend type Mutation {
+  # User mutations
+  createUser(
+    username: String!
+    realName: String
+    email: String!
+    phone: String
+    password: String!
+    role: Role!
+    status: UserStatus!
+  ): User!
 
-    updateUser(
-        id: ID!
-        username: String
-        realName: String
-        email: String
-        phone: String
-        password: String
-        role: Role
-        status: UserStatus
-    ): User!
+  updateUser(
+    id: ID!
+    username: String!
+    realName: String
+    email: String!
+    phone: String
+    status: UserStatus!
+  ): User!
 
-    deleteUser(id: ID!): Boolean!
+  deleteUser(id: ID!): Boolean!
+
+  updateUserStatus(id:ID!,status:UserStatus!):User!
 }

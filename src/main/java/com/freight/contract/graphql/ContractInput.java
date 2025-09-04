@@ -11,7 +11,7 @@ public class ContractInput {
     private LocalDateTime contractDate;
     private LocalDateTime deliveryDate;
     private BigDecimal amount;
-    private String currency;
+    private String currencyCode;
     private String status;
     private String description;
     
@@ -71,12 +71,12 @@ public class ContractInput {
         this.amount = amount;
     }
     
-    public String getCurrency() {
-        return currency;
+    public String getCurrencyCode() {
+        return currencyCode;
     }
     
-    public void setCurrency(String currency) {
-        this.currency = currency;
+    public void setCurrencyCode(String currencyCode) {
+        this.currencyCode = currencyCode;
     }
     
     public String getStatus() {

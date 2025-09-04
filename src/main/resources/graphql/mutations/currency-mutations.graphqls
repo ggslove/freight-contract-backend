@@ -1,0 +1,18 @@
+extend type Mutation {
+    createCurrency(
+        code: String!
+        name: String!
+        symbol: String!
+        exchangeRate: Float!
+    ): Currency!
+    
+    updateCurrency(
+        id: ID!
+        name: String!
+        symbol: String!
+        exchangeRate: Float!
+        isActive: Boolean!
+    ): Currency!
+    
+    deleteCurrency(id: ID!): Boolean!
+}

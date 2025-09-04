@@ -3,7 +3,7 @@ type Payable {
     contract: Contract!
     supplierName: String!
     amount: Float!
-    currency: String!
+    currency: Currency!
     dueDate: DateTime
     status: PayableStatus!
     createdAt: DateTime!

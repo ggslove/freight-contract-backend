@@ -2,6 +2,7 @@ package com.freight.contract.graphql;
 
 import com.freight.contract.entity.Contract;
 import com.freight.contract.entity.ContractStatus;
+import com.freight.contract.entity.Currency;
 import com.freight.contract.service.ContractService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -46,7 +47,6 @@ public class ContractResolver {
             @Argument String billNo,
             @Argument String salesman,
             @Argument BigDecimal amount,
-            @Argument String currency,
             @Argument String status,
             @Argument LocalDateTime contractDate,
             @Argument LocalDateTime deliveryDate,
@@ -58,7 +58,9 @@ public class ContractResolver {
         contract.setBillNo(billNo);
         contract.setSalesman(salesman);
         contract.setAmount(amount);
-        contract.setCurrency(currency);
+        
+        // 设置币种
+
         contract.setStatus(ContractStatus.valueOf(status));
         contract.setContractDate(contractDate);
         contract.setDeliveryDate(deliveryDate);
@@ -74,7 +76,7 @@ public class ContractResolver {
             @Argument String billNo,
             @Argument String salesman,
             @Argument BigDecimal amount,
-            @Argument String currency,
+            @Argument String currencyCode,
             @Argument String status,
             @Argument LocalDateTime contractDate,
             @Argument LocalDateTime deliveryDate,
@@ -86,7 +88,11 @@ public class ContractResolver {
         contractDetails.setBillNo(billNo);
         contractDetails.setSalesman(salesman);
         contractDetails.setAmount(amount);
-        contractDetails.setCurrency(currency);
+        
+        // 设置币种
+        Currency currency = new Currency();
+        currency.setCode(currencyCode);
+
         contractDetails.setStatus(ContractStatus.valueOf(status));
         contractDetails.setContractDate(contractDate);
         contractDetails.setDeliveryDate(deliveryDate);

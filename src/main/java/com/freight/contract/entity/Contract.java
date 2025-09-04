@@ -31,8 +31,9 @@ public class Contract {
     @Column(name = "amount", nullable = false, precision = 15, scale = 2)
     private BigDecimal amount;
     
-    @Column(name = "currency", nullable = false, length = 3)
-    private String currency;
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "currency_id", nullable = false)
+//    private Currency currency;
     
     @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false)

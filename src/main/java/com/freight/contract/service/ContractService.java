@@ -35,9 +35,7 @@ public class ContractService {
         return contractRepository.searchByKeyword(keyword);
     }
     
-    public List<Contract> getContractsByCurrency(String currency) {
-        return contractRepository.findByCurrency(currency);
-    }
+
     
     public Contract createContract(Contract contract) {
         // 确保使用save方法并返回保存后的实体
@@ -52,7 +50,6 @@ public class ContractService {
                     existing.setSalesman(contract.getSalesman());
                     existing.setContractDate(contract.getContractDate());
                     existing.setAmount(contract.getAmount());
-                    existing.setCurrency(contract.getCurrency());
                     existing.setStatus(contract.getStatus());
                     return contractRepository.save(existing);
                 });

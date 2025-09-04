@@ -1,6 +1,7 @@
 package com.freight.contract.graphql;
 
 import com.freight.contract.entity.Contract;
+import com.freight.contract.entity.Currency;
 import com.freight.contract.entity.Payable;
 import com.freight.contract.entity.PayableStatus;
 import com.freight.contract.service.PayableService;
@@ -46,7 +47,7 @@ public class PayableResolver {
     
     @MutationMapping
     public Payable createPayable(@Argument Long contractId, @Argument String supplierName,
-                               @Argument java.math.BigDecimal amount, @Argument String currency,
+                               @Argument java.math.BigDecimal amount, @Argument String currencyCode,
                                @Argument java.time.LocalDateTime dueDate, @Argument String status) {
         Payable payable = new Payable();
         
@@ -55,10 +56,14 @@ public class PayableResolver {
         contract.setId(contractId);
         payable.setContract(contract);
         
+        // 设置币种
+        Currency currency = new Currency();
+        currency.setCode(currencyCode != null ? currencyCode : "CNY");
+        payable.setCurrency(currency);
+        
         // 添加空值检查和默认值
         payable.setSupplierName(supplierName != null ? supplierName : "未知供应商");
         payable.setAmount(amount != null ? amount : java.math.BigDecimal.ZERO);
-        payable.setCurrency(currency != null ? currency : "CNY");
         payable.setDueDate(dueDate);
         
         // 安全处理状态
@@ -80,7 +85,12 @@ public class PayableResolver {
         Payable payableDetails = new Payable();
         payableDetails.setSupplierName(input.getSupplierName());
         payableDetails.setAmount(input.getAmount());
-        payableDetails.setCurrency(input.getCurrency());
+        
+        // 设置币种
+        Currency currency = new Currency();
+        currency.setCode(input.getCurrencyCode());
+        payableDetails.setCurrency(currency);
+        
         payableDetails.setDueDate(input.getDueDate());
         payableDetails.setStatus(PayableStatus.valueOf(input.getStatus()));
         return payableService.updatePayable(id, payableDetails).orElse(null);

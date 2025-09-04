@@ -19,8 +19,7 @@ public interface ContractRepository extends JpaRepository<Contract, Long> {
     
     List<Contract> findByStatus(ContractStatus status);
     
-    List<Contract> findByCurrency(String currency);
-    
+
     @Query("SELECT c FROM Contract c WHERE c.businessNo LIKE %:keyword% OR c.customerName LIKE %:keyword% OR c.salesman LIKE %:keyword%")
     List<Contract> searchByKeyword(@Param("keyword") String keyword);
 }

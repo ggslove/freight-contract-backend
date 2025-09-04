@@ -10,6 +10,7 @@ import org.springframework.graphql.data.method.annotation.QueryMapping;
 import org.springframework.stereotype.Controller;
 
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 
@@ -51,15 +52,15 @@ public class UserResolver {
     }
 
     @MutationMapping
-    public User updateUser(@Argument Long id, @Argument String username,
+    public User updateUser(@Argument Long id,
+                           @Argument String username,
                            @Argument String realName,
                            @Argument String email,
-                           @Argument String password, @Argument String phone,
-                           @Argument String role, @Argument String status) {
-        User user = userService.getUserById(id).orElse(null);
-        if (user == null) {
-            return null;
-        }
+                           @Argument String phone,
+                           @Argument String status
+    ) {
+        User user = new User();
+
         if (username != null) {
             user.setUsername(username);
         }
@@ -72,15 +73,28 @@ public class UserResolver {
         if (phone != null) {
             user.setPhone(phone);
         }
-        if (password != null) user.setPassword(password);
-        if (role != null) user.setRole(com.freight.contract.entity.Role.valueOf(role));
-        if (status != null) user.setStatus(com.freight.contract.entity.UserStatus.valueOf(status));
-        return userService.updateUser(id, user);
+        if (status != null) {
+            user.setStatus(com.freight.contract.entity.UserStatus.valueOf(status));
+        }
+//        if (role != null) user.setRole(com.freight.contract.entity.Role.valueOf(role));
+//        if (status != null) user.setStatus(com.freight.contract.entity.UserStatus.valueOf(status));
+        return userService.updateUser(id, user).orElse(null);
     }
 
     @MutationMapping
     public Boolean deleteUser(@Argument Long id) {
         userService.deleteUser(id);
         return true;
+    }
+
+    @MutationMapping
+    public User updateUserStatus(@Argument Long id, @Argument String status) {
+        User user = userService.getUserById(id).orElse(null);
+        if (user == null) {
+            return null;
+        }
+        user.setStatus(com.freight.contract.entity.UserStatus.valueOf(status));
+        return userService.updateUser(id, user).orElse(null);
+
     }
 }

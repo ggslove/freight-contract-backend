@@ -54,7 +54,7 @@ public class UserService {
         return userRepository.save(user);
     }
     
-    public User updateUser(Long id, User userDetails) {
+    public Optional<User> updateUser(Long id, User userDetails) {
         return userRepository.findById(id)
                 .map(user -> {
                     if (!user.getUsername().equals(userDetails.getUsername()) && 
@@ -65,19 +65,19 @@ public class UserService {
                         userRepository.existsByEmail(userDetails.getEmail())) {
                         throw new RuntimeException("Email already exists: " + userDetails.getEmail());
                     }
-                    
+
                     user.setUsername(userDetails.getUsername());
                     user.setRealName(userDetails.getRealName());
                     user.setEmail(userDetails.getEmail());
                     user.setPhone(userDetails.getPhone());
-                    user.setRole(userDetails.getRole());
+                    //user.setRole(userDetails.getRole());
                     user.setStatus(userDetails.getStatus());
                     if (userDetails.getPassword() != null && !userDetails.getPassword().isEmpty()) {
                         user.setPassword(passwordEncoder.encode(userDetails.getPassword()));
                     }
                     return userRepository.save(user);
-                })
-                .orElseThrow(() -> new RuntimeException("User not found with id: " + id));
+                });
+
     }
     
     public void deleteUser(Long id) {

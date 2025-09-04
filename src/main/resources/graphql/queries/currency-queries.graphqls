@@ -1,0 +1,6 @@
+extend type Query {
+    currencies: [Currency!]!
+    activeCurrencies: [Currency!]!
+    currencyById(id: ID!): Currency
+    currencyByCode(code: String!): Currency
+}
