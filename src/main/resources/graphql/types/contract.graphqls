@@ -5,10 +5,10 @@ type Contract {
   salesman: String!
   theClient:String!
   invoiceNo:String
-  amount: String!
+  quantity: String!
   status: ContractStatus
-  dateOfReceipt:DateTime!
-  dateOfSailing:DateTime!
+  dateOfReceipt:Date!
+  dateOfSailing:Date!
   remarks: String
   receivables: [Receivable!]!
   payables: [Payable!]!
@@ -22,10 +22,10 @@ input ContractInput{
   salesman: String!
   theClient:String!
   invoiceNo:String
-  amount: String!
-  status: ContractStatus
-  dateOfReceipt:DateTime!
-  dateOfSailing:DateTime!
+  quantity: String!
+  status: ContractStatus!
+  dateOfReceipt:Date!
+  dateOfSailing:Date!
   remarks: String
 }
 

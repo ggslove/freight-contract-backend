@@ -4,6 +4,7 @@ import com.freight.contract.eunus.ContractStatus;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Setter
@@ -24,11 +25,9 @@ public class ContractInput {
     // 状态
     private ContractStatus status;
     //收货日期
-    private LocalDateTime dateOfReceipt;
+    private LocalDate dateOfReceipt;
     //开航日期 Date of Sailing
-    private LocalDateTime dateOfSailing;
-
-
+    private LocalDate dateOfSailing;
     //备注
     private String remarks;
 }

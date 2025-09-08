@@ -27,14 +27,6 @@ public class ReceivableService {
         return receivableRepository.findByContractId(contractId);
     }
     
-    public List<Receivable> getReceivablesByStatus(ContractStatus status) {
-        return receivableRepository.findByStatus(status);
-    }
-    
-    public List<Receivable> getReceivablesByCustomerName(String customerName) {
-        return receivableRepository.findByCustomerNameContainingIgnoreCase(customerName);
-    }
-    
     public List<Receivable> searchReceivables(String keyword) {
         return receivableRepository.searchByKeyword(keyword);
     }

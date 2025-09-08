@@ -40,15 +40,7 @@ public class ReceivableResolver {
         return receivableService.getReceivablesByContractId(contractId);
     }
 
-    @QueryMapping
-    public List<Receivable> receivablesByStatus(@Argument String status) {
-        return receivableService.getReceivablesByStatus(ContractStatus.valueOf(status));
-    }
 
-    @QueryMapping
-    public List<Receivable> searchReceivables(@Argument String keyword) {
-        return receivableService.searchReceivables(keyword);
-    }
 
     @MutationMapping
     public Receivable createReceivable(@Argument Long contractId, @Argument ReceivableInput receivableInput) {

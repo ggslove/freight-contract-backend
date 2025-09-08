@@ -4,6 +4,7 @@ import com.freight.contract.eunus.ContractStatus;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -34,10 +35,10 @@ public class Contract {
     private String quantity;
     //收货日期
     @Column(name = "date_of_receipt")
-    private LocalDateTime dateOfReceipt;
+    private LocalDate dateOfReceipt;
     //开航日期 Date of Sailing
     @Column(name = "date_of_sailing")
-    private LocalDateTime dateOfSailing;
+    private LocalDate dateOfSailing;
     //备注
     @Column(name = "remarks", columnDefinition = "TEXT")
     private String remarks;

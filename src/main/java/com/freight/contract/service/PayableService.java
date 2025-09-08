@@ -27,13 +27,7 @@ public class PayableService {
         return payableRepository.findByContractId(contractId);
     }
 
-    public List<Payable> getPayablesByStatus(ContractStatus status) {
-        return payableRepository.findByStatus(status);
-    }
 
-    public List<Payable> getPayablesBySupplierName(String supplierName) {
-        return payableRepository.findBySupplierNameContainingIgnoreCase(supplierName);
-    }
 
     public List<Payable> searchPayables(String keyword) {
         return payableRepository.searchByKeyword(keyword);

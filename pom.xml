@@ -54,15 +54,7 @@
             <artifactId>h2</artifactId>
             <scope>runtime</scope>
         </dependency>
-        
-        <!-- GraphQL Scalars -->
-        <dependency>
-            <groupId>com.graphql-java</groupId>
-            <artifactId>graphql-java-extended-scalars</artifactId>
-            <!-- 升级到支持Upload的版本 -->
-            <version>20.0</version>
-        </dependency>
-        
+
         <!-- Commons FileUpload for multipart support -->
         <dependency>
             <groupId>commons-fileupload</groupId>
@@ -88,6 +80,12 @@
             <groupId>org.springframework.graphql</groupId>
             <artifactId>spring-graphql-test</artifactId>
             <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.graphql-java</groupId>
+            <artifactId>graphql-java-extended-scalars</artifactId>
+            <version>24.0</version>
         </dependency>
         
         <dependency>

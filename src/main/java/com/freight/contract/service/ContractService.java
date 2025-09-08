@@ -24,9 +24,6 @@ public class ContractService {
         return contractRepository.findById(id);
     }
 
-    public List<Contract> getContractsByCustomerName(String customerName) {
-        return contractRepository.findByCustomerNameContainingIgnoreCase(customerName);
-    }
 
     public List<Contract> getContractsByStatus(ContractStatus status) {
         return contractRepository.findByStatus(status);

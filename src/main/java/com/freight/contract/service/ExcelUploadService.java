@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -50,7 +51,7 @@ public class ExcelUploadService {
                 contract.setTheClient(getCellValue(row.getCell(1)));
                 contract.setQuantity(getCellValue(row.getCell(2)));
                 contract.setStatus(ContractStatus.valueOf(getCellValue(row.getCell(4))));
-                contract.setDateOfReceipt(LocalDateTime.parse(getCellValue(row.getCell(5))));
+                contract.setDateOfReceipt(LocalDate.parse(getCellValue(row.getCell(5))));
                 // ... 设置其他字段
 
                 // 保存合同
