@@ -4,8 +4,6 @@ import com.freight.contract.eunus.ContractStatus;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.Column;
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Setter

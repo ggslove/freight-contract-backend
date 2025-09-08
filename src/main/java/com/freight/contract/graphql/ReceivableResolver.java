@@ -5,16 +5,15 @@ import com.freight.contract.entity.Currency;
 import com.freight.contract.entity.Receivable;
 import com.freight.contract.eunus.ContractStatus;
 import com.freight.contract.mapper.ReceivableMapper;
+import com.freight.contract.service.ContractService;
 import com.freight.contract.service.CurrencyService;
 import com.freight.contract.service.ReceivableService;
-import com.freight.contract.service.ContractService;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.graphql.data.method.annotation.QueryMapping;
-import org.springframework.graphql.data.method.annotation.MutationMapping;
 import org.springframework.graphql.data.method.annotation.Argument;
+import org.springframework.graphql.data.method.annotation.MutationMapping;
+import org.springframework.graphql.data.method.annotation.QueryMapping;
 import org.springframework.graphql.data.method.annotation.SchemaMapping;
+import org.springframework.stereotype.Controller;
 
 import java.util.List;
 

@@ -1,6 +1,9 @@
 package com.freight.contract.config;
 
-import com.freight.contract.entity.*;
+import com.freight.contract.entity.Currency;
+import com.freight.contract.entity.Role;
+import com.freight.contract.entity.User;
+import com.freight.contract.entity.UserStatus;
 import com.freight.contract.repository.CurrencyRepository;
 import com.freight.contract.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
