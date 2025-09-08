@@ -9,3 +9,10 @@ type Receivable {
     createdAt: DateTime!
     updatedAt: DateTime!
 }
+
+input ReceivableInput {
+    customerName: String!
+    amount: Float!
+    currencyCode: String!
+    status: ReceivableStatus!
+}

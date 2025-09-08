@@ -9,3 +9,10 @@ type Payable {
     createdAt: DateTime!
     updatedAt: DateTime!
 }
+
+input PayableInput {
+    supplierName: String!
+    amount: Float!
+    currencyCode: String!
+    status: PayableStatus!
+}

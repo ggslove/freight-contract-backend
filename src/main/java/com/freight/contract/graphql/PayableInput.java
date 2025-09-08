@@ -1,5 +1,7 @@
 package com.freight.contract.graphql;
 
+import com.freight.contract.entity.PayableStatus;
+
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
@@ -8,7 +10,7 @@ public class PayableInput {
     private BigDecimal amount;
     private String currencyCode;
     private LocalDateTime dueDate;
-    private String status;
+    private PayableStatus status;
     
     public String getSupplierName() {
         return supplierName;
@@ -42,11 +44,11 @@ public class PayableInput {
         this.dueDate = dueDate;
     }
     
-    public String getStatus() {
+    public PayableStatus getStatus() {
         return status;
     }
     
-    public void setStatus(String status) {
+    public void setStatus(PayableStatus status) {
         this.status = status;
     }
 }

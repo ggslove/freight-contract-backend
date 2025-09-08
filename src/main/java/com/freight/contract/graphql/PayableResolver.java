@@ -92,7 +92,7 @@ public class PayableResolver {
         payableDetails.setCurrency(currency);
         
         payableDetails.setDueDate(input.getDueDate());
-        payableDetails.setStatus(PayableStatus.valueOf(input.getStatus()));
+        payableDetails.setStatus(input.getStatus());
         return payableService.updatePayable(id, payableDetails).orElse(null);
     }
     

@@ -10,6 +10,8 @@ extend type Mutation {
     contractDate: DateTime
     deliveryDate: DateTime
     description: String
+    receivableInputs: [ReceivableInput!]
+    payableInputs: [PayableInput!]
   ): Contract!
 
   updateContract(
