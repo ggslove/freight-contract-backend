@@ -5,6 +5,7 @@ import com.freight.contract.entity.Currency;
 import com.freight.contract.entity.Payable;
 import com.freight.contract.entity.PayableStatus;
 import com.freight.contract.service.PayableService;
+import com.freight.contract.repository.CurrencyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.graphql.data.method.annotation.QueryMapping;
@@ -19,6 +20,9 @@ public class PayableResolver {
     
     @Autowired
     private PayableService payableService;
+    
+    @Autowired
+    private CurrencyRepository currencyRepository;
     
     @QueryMapping
     public List<Payable> payables() {
@@ -56,9 +60,13 @@ public class PayableResolver {
         contract.setId(contractId);
         payable.setContract(contract);
         
-        // 设置币种
-        Currency currency = new Currency();
-        currency.setCode(currencyCode != null ? currencyCode : "CNY");
+        // 设置币种 - 从币种管理获取
+        Currency currency = currencyRepository.findByCode(currencyCode != null ? currencyCode : "CNY")
+                .orElseGet(() -> {
+                    Currency defaultCurrency = new Currency();
+                    defaultCurrency.setCode("CNY");
+                    return defaultCurrency;
+                });
         payable.setCurrency(currency);
         
         // 添加空值检查和默认值
@@ -86,9 +94,13 @@ public class PayableResolver {
         payableDetails.setSupplierName(input.getSupplierName());
         payableDetails.setAmount(input.getAmount());
         
-        // 设置币种
-        Currency currency = new Currency();
-        currency.setCode(input.getCurrencyCode());
+        // 设置币种 - 从币种管理获取
+        Currency currency = currencyRepository.findByCode(input.getCurrencyCode())
+                .orElseGet(() -> {
+                    Currency defaultCurrency = new Currency();
+                    defaultCurrency.setCode("CNY");
+                    return defaultCurrency;
+                });
         payableDetails.setCurrency(currency);
         
         payableDetails.setDueDate(input.getDueDate());

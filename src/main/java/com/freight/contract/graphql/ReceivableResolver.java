@@ -5,6 +5,7 @@ import com.freight.contract.entity.Currency;
 import com.freight.contract.entity.Receivable;
 import com.freight.contract.entity.ReceivableStatus;
 import com.freight.contract.service.ReceivableService;
+import com.freight.contract.repository.CurrencyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.graphql.data.method.annotation.QueryMapping;
@@ -19,6 +20,9 @@ public class ReceivableResolver {
 
     @Autowired
     private ReceivableService receivableService;
+
+    @Autowired
+    private CurrencyRepository currencyRepository;
 
     @QueryMapping
     public List<Receivable> receivables() {
@@ -56,9 +60,13 @@ public class ReceivableResolver {
         contract.setId(contractId);
         receivable.setContract(contract);
 
-        // 设置币种
-        Currency currency = new Currency();
-        currency.setCode(currencyCode != null ? currencyCode : "CNY");
+        // 设置币种 - 从币种管理获取
+        Currency currency = currencyRepository.findByCode(currencyCode != null ? currencyCode : "CNY")
+                .orElseGet(() -> {
+                    Currency defaultCurrency = new Currency();
+                    defaultCurrency.setCode("CNY");
+                    return defaultCurrency;
+                });
         receivable.setCurrency(currency);
 
         // 添加空值检查和默认值
@@ -86,9 +94,13 @@ public class ReceivableResolver {
         receivableDetails.setCustomerName(input.getCustomerName());
         receivableDetails.setAmount(input.getAmount());
 
-        // 设置币种
-        Currency currency = new Currency();
-        currency.setCode(input.getCurrencyCode());
+        // 设置币种 - 从币种管理获取
+        Currency currency = currencyRepository.findByCode(input.getCurrencyCode())
+                .orElseGet(() -> {
+                    Currency defaultCurrency = new Currency();
+                    defaultCurrency.setCode("CNY");
+                    return defaultCurrency;
+                });
         receivableDetails.setCurrency(currency);
 
         receivableDetails.setDueDate(input.getDueDate());

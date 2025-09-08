@@ -1,8 +1,7 @@
 package com.freight.contract.config;
 
-import com.freight.contract.entity.Role;
-import com.freight.contract.entity.User;
-import com.freight.contract.entity.UserStatus;
+import com.freight.contract.entity.*;
+import com.freight.contract.repository.CurrencyRepository;
 import com.freight.contract.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
@@ -11,12 +10,15 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.math.BigDecimal;
+
 @Configuration
 @RequiredArgsConstructor
 @Profile("dev")
 public class DataInitializer {
 
     private final UserRepository userRepository;
+    private final CurrencyRepository currencyRepository;
     private final PasswordEncoder passwordEncoder;
 
     @Bean
@@ -75,6 +77,71 @@ public class DataInitializer {
                 userRepository.save(finance);
                 System.out.println("财务人员用户创建成功: finance/finance123");
             }
+
+            // 初始化币种数据
+            initCurrencies();
         };
+    }
+
+    private void initCurrencies() {
+        // 人民币
+        if (!currencyRepository.existsByCode("CNY")) {
+            Currency cny = new Currency();
+            cny.setCode("CNY");
+            cny.setName("人民币");
+            cny.setSymbol("¥");
+            cny.setExchangeRate(BigDecimal.ONE);
+            cny.setIsActive(true);
+            currencyRepository.save(cny);
+            System.out.println("初始化币种: CNY - 人民币");
+        }
+
+        // 美元
+        if (!currencyRepository.existsByCode("USD")) {
+            Currency usd = new Currency();
+            usd.setCode("USD");
+            usd.setName("美元");
+            usd.setSymbol("$");
+            usd.setExchangeRate(new BigDecimal("7.2"));
+            usd.setIsActive(true);
+            currencyRepository.save(usd);
+            System.out.println("初始化币种: USD - 美元");
+        }
+
+        // 欧元
+        if (!currencyRepository.existsByCode("EUR")) {
+            Currency eur = new Currency();
+            eur.setCode("EUR");
+            eur.setName("欧元");
+            eur.setSymbol("€");
+            eur.setExchangeRate(new BigDecimal("7.8"));
+            eur.setIsActive(true);
+            currencyRepository.save(eur);
+            System.out.println("初始化币种: EUR - 欧元");
+        }
+
+        // 英镑
+        if (!currencyRepository.existsByCode("GBP")) {
+            Currency gbp = new Currency();
+            gbp.setCode("GBP");
+            gbp.setName("英镑");
+            gbp.setSymbol("£");
+            gbp.setExchangeRate(new BigDecimal("9.2"));
+            gbp.setIsActive(true);
+            currencyRepository.save(gbp);
+            System.out.println("初始化币种: GBP - 英镑");
+        }
+
+        // 日元
+        if (!currencyRepository.existsByCode("JPY")) {
+            Currency jpy = new Currency();
+            jpy.setCode("JPY");
+            jpy.setName("日元");
+            jpy.setSymbol("¥");
+            jpy.setExchangeRate(new BigDecimal("0.048"));
+            jpy.setIsActive(true);
+            currencyRepository.save(jpy);
+            System.out.println("初始化币种: JPY - 日元");
+        }
     }
 }
