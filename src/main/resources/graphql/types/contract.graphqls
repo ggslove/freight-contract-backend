@@ -1,16 +1,33 @@
 type Contract {
   id: ID!
-  businessNo: String!
-  customerName: String!
-  billNo: String
-  salesman: String
-  amount: Float!
-  status: ContractStatus!
-  contractDate: DateTime
-  deliveryDate: DateTime
-  description: String
+  businessNo:String!
+  billNo: String!
+  salesman: String!
+  theClient:String!
+  invoiceNo:String
+  amount: String!
+  status: ContractStatus
+  dateOfReceipt:DateTime!
+  dateOfSailing:DateTime!
+  remarks: String
   receivables: [Receivable!]!
   payables: [Payable!]!
   createdAt: DateTime!
   updatedAt: DateTime!
 }
+
+input ContractInput{
+  businessNo:String!
+  billNo: String!
+  salesman: String!
+  theClient:String!
+  invoiceNo:String
+  amount: String!
+  status: ContractStatus
+  dateOfReceipt:DateTime!
+  dateOfSailing:DateTime!
+  remarks: String
+}
+
+
+

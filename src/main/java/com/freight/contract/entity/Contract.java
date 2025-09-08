@@ -1,9 +1,9 @@
 package com.freight.contract.entity;
 
+import com.freight.contract.eunus.ContractStatus;
 import lombok.Data;
 
 import javax.persistence.*;
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -11,38 +11,40 @@ import java.util.List;
 @Table(name = "contract")
 @Data
 public class Contract {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY) // 或其他合适的生成策略
     private Long id;
-
+    //业务编号 Business No.
     @Column(name = "business_no", unique = true, nullable = false)
     private String businessNo;
-
-    @Column(name = "customer_name", nullable = false)
-    private String customerName;
-
+    // 提单号
     @Column(name = "bill_no")
     private String billNo;
-
+    // 业务员
     @Column(name = "salesman")
     private String salesman;
-
-    @Column(name = "amount", nullable = false, precision = 15, scale = 2)
-    private BigDecimal amount;
+    // 发票号  Inv No.
+    @Column(name = "invoice_no")
+    private String invoiceNo;
+    // 客户抬头
+    @Column(name = "the_client", nullable = false)
+    private String theClient;
+    // 数量
+    @Column(name = "quantity", nullable = false)
+    private String quantity;
+    //收货日期
+    @Column(name = "date_of_receipt")
+    private LocalDateTime dateOfReceipt;
+    //开航日期 Date of Sailing
+    @Column(name = "date_of_sailing")
+    private LocalDateTime dateOfSailing;
+    //备注
+    @Column(name = "remarks", columnDefinition = "TEXT")
+    private String remarks;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false)
     private ContractStatus status;
-
-    @Column(name = "contract_date")
-    private LocalDateTime contractDate;
-
-    @Column(name = "delivery_date")
-    private LocalDateTime deliveryDate;
-
-    @Column(name = "description", columnDefinition = "TEXT")
-    private String description;
 
     @OneToMany(mappedBy = "contract", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Receivable> receivables;

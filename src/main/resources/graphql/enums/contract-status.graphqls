@@ -1,6 +1,6 @@
 enum ContractStatus {
   PENDING
-  PROCESSING
+  PARTIAL
   COMPLETED
-  CANCELLED
+  OVERDUE
 }

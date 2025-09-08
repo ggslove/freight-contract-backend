@@ -1,9 +1,9 @@
 package com.freight.contract.service;
 
 import com.freight.contract.entity.Contract;
-import com.freight.contract.entity.ContractStatus;
 import com.freight.contract.entity.Receivable;
 import com.freight.contract.entity.Payable;
+import com.freight.contract.eunus.ContractStatus;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Row;
@@ -48,10 +48,10 @@ public class ExcelUploadService {
                 // 解析合同数据(根据实际Excel列顺序调整)
                 Contract contract = new Contract();
                 contract.setBusinessNo(getCellValue(row.getCell(0)));
-                contract.setCustomerName(getCellValue(row.getCell(1)));
-                contract.setAmount(new BigDecimal(getCellValue(row.getCell(2))));
+                contract.setTheClient(getCellValue(row.getCell(1)));
+                contract.setQuantity(getCellValue(row.getCell(2)));
                 contract.setStatus(ContractStatus.valueOf(getCellValue(row.getCell(4))));
-                contract.setContractDate(LocalDateTime.parse(getCellValue(row.getCell(5))));
+                contract.setDateOfReceipt(LocalDateTime.parse(getCellValue(row.getCell(5))));
                 // ... 设置其他字段
 
                 // 保存合同
@@ -66,15 +66,14 @@ public class ExcelUploadService {
                 Receivable receivable = new Receivable();
                 // 将ID关联改为对象关联
                 receivable.setContract(savedContract);
-                receivable.setAmount(new BigDecimal(getCellValue(row.getCell(6))));
-                receivable.setDueDate(LocalDateTime.parse(getCellValue(row.getCell(7))));
+                receivable.setAmount(getCellValue(row.getCell(6)));
                 receivableService.createReceivable(receivable);
 
                 // 解析应付数据
                 Payable payable = new Payable();
                 // 将ID关联改为对象关联
                 payable.setContract(savedContract);
-                payable.setAmount(new BigDecimal(getCellValue(row.getCell(8))));
+                payable.setAmount(getCellValue(row.getCell(8)));
                 payable.setDueDate(LocalDateTime.parse(getCellValue(row.getCell(9))));
                 payableService.createPayable(payable);
             }

@@ -3,4 +3,5 @@ extend type Query {
   contracts: [Contract!]!
   contract(id: ID!): Contract
   contractsByStatus(status: ContractStatus!): [Contract!]!
+  searchContracts(keyword: String!): [Contract!]!
 }

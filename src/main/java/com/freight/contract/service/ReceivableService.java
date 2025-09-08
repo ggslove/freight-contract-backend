@@ -1,7 +1,7 @@
 package com.freight.contract.service;
 
 import com.freight.contract.entity.Receivable;
-import com.freight.contract.entity.ReceivableStatus;
+import com.freight.contract.eunus.ContractStatus;
 import com.freight.contract.repository.ReceivableRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,7 +27,7 @@ public class ReceivableService {
         return receivableRepository.findByContractId(contractId);
     }
     
-    public List<Receivable> getReceivablesByStatus(ReceivableStatus status) {
+    public List<Receivable> getReceivablesByStatus(ContractStatus status) {
         return receivableRepository.findByStatus(status);
     }
     
@@ -46,10 +46,9 @@ public class ReceivableService {
     public Optional<Receivable> updateReceivable(Long id, Receivable receivableDetails) {
         return receivableRepository.findById(id)
                 .map(receivable -> {
-                    receivable.setCustomerName(receivableDetails.getCustomerName());
+                    receivable.setFinanceItem(receivableDetails.getFinanceItem());
                     receivable.setAmount(receivableDetails.getAmount());
                     receivable.setCurrency(receivableDetails.getCurrency());
-                    receivable.setDueDate(receivableDetails.getDueDate());
                     receivable.setStatus(receivableDetails.getStatus());
                     return receivableRepository.save(receivable);
                 });

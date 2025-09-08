@@ -1,97 +1,36 @@
 package com.freight.contract.graphql;
 
+import com.freight.contract.eunus.ContractStatus;
+import lombok.Getter;
+import lombok.Setter;
+
+import javax.persistence.Column;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
+@Setter
+@Getter
 public class ContractInput {
+    //业务编号 Business No.
     private String businessNo;
-    private String customerName;
+    // 提单号
     private String billNo;
+    // 业务员
     private String salesman;
-    private LocalDateTime contractDate;
-    private LocalDateTime deliveryDate;
-    private BigDecimal amount;
-    private String currencyCode;
-    private String status;
-    private String description;
-    
-    public String getBusinessNo() {
-        return businessNo;
-    }
-    
-    public void setBusinessNo(String businessNo) {
-        this.businessNo = businessNo;
-    }
-    
-    public String getCustomerName() {
-        return customerName;
-    }
-    
-    public void setCustomerName(String customerName) {
-        this.customerName = customerName;
-    }
-    
-    public String getBillNo() {
-        return billNo;
-    }
-    
-    public void setBillNo(String billNo) {
-        this.billNo = billNo;
-    }
-    
-    public String getSalesman() {
-        return salesman;
-    }
-    
-    public void setSalesman(String salesman) {
-        this.salesman = salesman;
-    }
-    
-    public LocalDateTime getContractDate() {
-        return contractDate;
-    }
-    
-    public void setContractDate(LocalDateTime contractDate) {
-        this.contractDate = contractDate;
-    }
-    
-    public LocalDateTime getDeliveryDate() {
-        return deliveryDate;
-    }
-    
-    public void setDeliveryDate(LocalDateTime deliveryDate) {
-        this.deliveryDate = deliveryDate;
-    }
-    
-    public BigDecimal getAmount() {
-        return amount;
-    }
-    
-    public void setAmount(BigDecimal amount) {
-        this.amount = amount;
-    }
-    
-    public String getCurrencyCode() {
-        return currencyCode;
-    }
-    
-    public void setCurrencyCode(String currencyCode) {
-        this.currencyCode = currencyCode;
-    }
-    
-    public String getStatus() {
-        return status;
-    }
-    
-    public void setStatus(String status) {
-        this.status = status;
-    }
-    
-    public String getDescription() {
-        return description;
-    }
-    
-    public void setDescription(String description) {
-        this.description = description;
-    }
+    // 发票号  Inv No.
+    private String invoiceNo;
+    // 客户抬头
+    private String theClient;
+    // 数量
+    private String quantity;
+    // 状态
+    private ContractStatus status;
+    //收货日期
+    private LocalDateTime dateOfReceipt;
+    //开航日期 Date of Sailing
+    private LocalDateTime dateOfSailing;
+
+
+    //备注
+    private String remarks;
 }

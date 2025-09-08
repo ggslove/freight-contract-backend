@@ -3,9 +3,12 @@ package com.freight.contract.graphql;
 import com.freight.contract.entity.Contract;
 import com.freight.contract.entity.Currency;
 import com.freight.contract.entity.Receivable;
-import com.freight.contract.entity.ReceivableStatus;
+import com.freight.contract.eunus.ContractStatus;
+import com.freight.contract.mapper.ReceivableMapper;
+import com.freight.contract.service.CurrencyService;
 import com.freight.contract.service.ReceivableService;
-import com.freight.contract.repository.CurrencyRepository;
+import com.freight.contract.service.ContractService;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.graphql.data.method.annotation.QueryMapping;
@@ -16,13 +19,12 @@ import org.springframework.graphql.data.method.annotation.SchemaMapping;
 import java.util.List;
 
 @Controller
+@AllArgsConstructor
 public class ReceivableResolver {
-
-    @Autowired
-    private ReceivableService receivableService;
-
-    @Autowired
-    private CurrencyRepository currencyRepository;
+    private final CurrencyService currencyService;
+    private final ReceivableService receivableService;
+    private final ContractService contractService;
+    private final ReceivableMapper receivableMapper;
 
     @QueryMapping
     public List<Receivable> receivables() {
@@ -41,7 +43,7 @@ public class ReceivableResolver {
 
     @QueryMapping
     public List<Receivable> receivablesByStatus(@Argument String status) {
-        return receivableService.getReceivablesByStatus(ReceivableStatus.valueOf(status));
+        return receivableService.getReceivablesByStatus(ContractStatus.valueOf(status));
     }
 
     @QueryMapping
@@ -50,66 +52,31 @@ public class ReceivableResolver {
     }
 
     @MutationMapping
-    public Receivable createReceivable(@Argument Long contractId, @Argument String customerName,
-                                       @Argument java.math.BigDecimal amount, @Argument String currencyCode,
-                                       @Argument java.time.LocalDateTime dueDate, @Argument String status) {
-        Receivable receivable = new Receivable();
+    public Receivable createReceivable(@Argument Long contractId, @Argument ReceivableInput receivableInput) {
+        Contract contract = contractService.getContractById(contractId)
+                .orElseThrow(() -> new RuntimeException("Contract not found with id: " + contractId));
 
-        // 设置关联的合同
-        Contract contract = new Contract();
-        contract.setId(contractId);
-        receivable.setContract(contract);
-
-        // 设置币种 - 从币种管理获取
-        Currency currency = currencyRepository.findByCode(currencyCode != null ? currencyCode : "CNY")
-                .orElseGet(() -> {
-                    Currency defaultCurrency = new Currency();
-                    defaultCurrency.setCode("CNY");
-                    return defaultCurrency;
-                });
-        receivable.setCurrency(currency);
-
-        // 添加空值检查和默认值
-        receivable.setCustomerName(customerName != null ? customerName : "未知客户");
-        receivable.setAmount(amount != null ? amount : java.math.BigDecimal.ZERO);
-        receivable.setDueDate(dueDate);
-
-        // 安全处理状态
-        String statusStr = status;
-        if (statusStr == null || statusStr.trim().isEmpty()) {
-            statusStr = "PENDING";
-        }
-        try {
-            receivable.setStatus(ReceivableStatus.valueOf(statusStr));
-        } catch (IllegalArgumentException e) {
-            receivable.setStatus(ReceivableStatus.PENDING);
-        }
-
+        Receivable receivable = receivableMapper.toEntity(receivableInput, contract);
         return receivableService.createReceivable(receivable);
     }
 
     @MutationMapping
-    public Receivable updateReceivable(@Argument Long id, @Argument ReceivableInput input) {
-        Receivable receivableDetails = new Receivable();
-        receivableDetails.setCustomerName(input.getCustomerName());
-        receivableDetails.setAmount(input.getAmount());
+    public Receivable updateReceivable(@Argument Long id, @Argument ReceivableInput receivableInput) {
+        Receivable existingReceivable = receivableService.getReceivableById(id)
+                .orElseThrow(() -> new RuntimeException("Receivable not found with id: " + id));
+        // 手动更新字段
+        existingReceivable.setFinanceItem(receivableInput.getFinanceItem());
+        existingReceivable.setAmount(receivableInput.getAmount());
+        existingReceivable.setStatus(receivableInput.getStatus());
 
-        // 设置币种 - 从币种管理获取
-        Currency currency = currencyRepository.findByCode(input.getCurrencyCode())
-                .orElseGet(() -> {
-                    Currency defaultCurrency = new Currency();
-                    defaultCurrency.setCode("CNY");
-                    return defaultCurrency;
-                });
-        receivableDetails.setCurrency(currency);
-
-        receivableDetails.setDueDate(input.getDueDate());
-        if (input.getStatus() != null) {
-            receivableDetails.setStatus(input.getStatus());
-        } else {
-            receivableDetails.setStatus(ReceivableStatus.PENDING);
+        // 更新币种
+        if (receivableInput.getCurrencyCode() != null) {
+            Currency currency = currencyService.getCurrencyByCode(receivableInput.getCurrencyCode()).orElseThrow(() ->
+                    new RuntimeException("Currency not found with code: " + receivableInput.getCurrencyCode()));
+            existingReceivable.setCurrency(currency);
         }
-        return receivableService.updateReceivable(id, receivableDetails).orElse(null);
+
+        return receivableService.updateReceivable(id, existingReceivable).orElse(null);
     }
 
     @MutationMapping

@@ -2,20 +2,12 @@ extend type  Mutation {
     # Payable mutations
     createPayable(
         contractId: ID!
-        supplierName: String!
-        amount: Float!
-        currencyCode: String!
-        dueDate: DateTime
-        status: PayableStatus!
+        payableInput:PayableInput!
     ): Payable!
 
     updatePayable(
         id: ID!
-        supplierName: String
-        amount: Float
-        currencyCode: String
-        dueDate: DateTime
-        status: PayableStatus
+        payableInput:PayableInput!
     ): Payable!
 
     deletePayable(id: ID!): Boolean!

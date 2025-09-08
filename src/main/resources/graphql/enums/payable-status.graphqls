@@ -1,6 +1,0 @@
-enum PayableStatus {
-    PENDING
-    PARTIAL
-    COMPLETED
-    OVERDUE
-}

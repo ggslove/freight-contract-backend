@@ -1,9 +1,9 @@
 package com.freight.contract.entity;
 
+import com.freight.contract.eunus.ContractStatus;
 import lombok.Data;
 
 import javax.persistence.*;
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Entity
@@ -19,22 +19,19 @@ public class Receivable {
     @JoinColumn(name = "contract_id") // 确保数据库字段映射正确
     private Contract contract;
 
-    @Column(name = "customer_name", nullable = false)
-    private String customerName;
+    @Column(name = "finance_item", nullable = false)
+    private String financeItem;
 
-    @Column(name = "amount", nullable = false, precision = 15, scale = 2)
-    private BigDecimal amount;
+    @Column(name = "amount", nullable = false)
+    private String amount;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "currency_id", nullable = false)
     private Currency currency;
 
-    @Column(name = "due_date")
-    private LocalDateTime dueDate;
-
     @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false)
-    private ReceivableStatus status;
+    private ContractStatus status;
 
     @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;

@@ -1,18 +1,18 @@
 type Receivable {
-    id: ID!
-    contract: Contract!
-    customerName: String!
-    amount: Float!
-    currency: Currency!
-    dueDate: DateTime
-    status: ReceivableStatus!
-    createdAt: DateTime!
-    updatedAt: DateTime!
+  id: ID!
+  contract: Contract!
+  financeItem: String!
+  amount: String!
+  currency: Currency!
+  dueDate: DateTime
+  status: ContractStatus!
+  createdAt: DateTime!
+  updatedAt: DateTime!
 }
 
 input ReceivableInput {
-    customerName: String!
-    amount: Float!
-    currencyCode: String!
-    status: ReceivableStatus!
+  financeItem: String!
+  amount: String!
+  currencyCode: String!
+  status: ContractStatus!
 }

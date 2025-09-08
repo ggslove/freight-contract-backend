@@ -1,18 +1,20 @@
 type Payable {
-    id: ID!
-    contract: Contract!
-    supplierName: String!
-    amount: Float!
-    currency: Currency!
-    dueDate: DateTime
-    status: PayableStatus!
-    createdAt: DateTime!
-    updatedAt: DateTime!
+  id: ID!
+  contract: Contract!
+  financeItem: String!
+  amount: String!
+  currency: Currency!
+  dueDate: DateTime
+  status: ContractStatus!
+  createdAt: DateTime!
+  updatedAt: DateTime!
 }
 
+
+
 input PayableInput {
-    supplierName: String!
-    amount: Float!
-    currencyCode: String!
-    status: PayableStatus!
+  financeItem: String!
+  amount: String!
+  currencyCode: String!
+  status: ContractStatus!
 }

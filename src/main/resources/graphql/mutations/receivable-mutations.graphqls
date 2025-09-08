@@ -1,22 +1,14 @@
 type Mutation {
-    # Receivable mutations
-    createReceivable(
-        contractId: ID!
-        customerName: String!
-        amount: Float!
-        currencyCode: String!
-        dueDate: DateTime
-        status: ReceivableStatus!
-    ): Receivable!
+  # Receivable mutations
+  createReceivable(
+    contractId: ID!
+    receivableInput:ReceivableInput!
+  ): Receivable!
 
-    updateReceivable(
-        id: ID!
-        customerName: String
-        amount: Float
-        currencyCode: String
-        dueDate: DateTime
-        status: ReceivableStatus
-    ): Receivable!
+  updateReceivable(
+    id: ID!
+    receivableInput:ReceivableInput!
+  ): Receivable!
 
-    deleteReceivable(id: ID!): Boolean!
+  deleteReceivable(id: ID!): Boolean!
 }

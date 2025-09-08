@@ -25,7 +25,7 @@ public class DataInitializer {
     CommandLineRunner initDatabase() {
         return args -> {
             System.out.println("密码编码器类型: " + passwordEncoder.getClass().getName());
-            
+
             // 创建管理员用户
             if (!userRepository.existsByUsername("admin")) {
                 User admin = new User();
@@ -108,40 +108,18 @@ public class DataInitializer {
             System.out.println("初始化币种: USD - 美元");
         }
 
-        // 欧元
-        if (!currencyRepository.existsByCode("EUR")) {
-            Currency eur = new Currency();
-            eur.setCode("EUR");
-            eur.setName("欧元");
-            eur.setSymbol("€");
-            eur.setExchangeRate(new BigDecimal("7.8"));
-            eur.setIsActive(true);
-            currencyRepository.save(eur);
-            System.out.println("初始化币种: EUR - 欧元");
+
+        // 印尼盾
+        if (!currencyRepository.existsByCode("IDR")) {
+            Currency idr = new Currency();
+            idr.setCode("IDR");
+            idr.setName("印尼盾");
+            idr.setSymbol("Rp");
+            idr.setExchangeRate(new BigDecimal("0.0046")); // 示例汇率，需要根据实际情况调整
+            idr.setIsActive(true);
+            currencyRepository.save(idr);
+            System.out.println("初始化币种: IDR - 印尼盾");
         }
 
-        // 英镑
-        if (!currencyRepository.existsByCode("GBP")) {
-            Currency gbp = new Currency();
-            gbp.setCode("GBP");
-            gbp.setName("英镑");
-            gbp.setSymbol("£");
-            gbp.setExchangeRate(new BigDecimal("9.2"));
-            gbp.setIsActive(true);
-            currencyRepository.save(gbp);
-            System.out.println("初始化币种: GBP - 英镑");
-        }
-
-        // 日元
-        if (!currencyRepository.existsByCode("JPY")) {
-            Currency jpy = new Currency();
-            jpy.setCode("JPY");
-            jpy.setName("日元");
-            jpy.setSymbol("¥");
-            jpy.setExchangeRate(new BigDecimal("0.048"));
-            jpy.setIsActive(true);
-            currencyRepository.save(jpy);
-            System.out.println("初始化币种: JPY - 日元");
-        }
     }
 }

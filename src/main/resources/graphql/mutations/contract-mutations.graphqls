@@ -1,31 +1,14 @@
 extend type Mutation {
   # Contract mutations
   createContract(
-    businessNo: String!
-    customerName: String!
-    billNo: String
-    salesman: String
-    amount: Float!
-    status: ContractStatus!
-    contractDate: DateTime
-    deliveryDate: DateTime
-    description: String
+    contractInput: ContractInput!
     receivableInputs: [ReceivableInput!]
     payableInputs: [PayableInput!]
   ): Contract!
 
   updateContract(
     id: ID!
-    businessNo: String
-    customerName: String
-    billNo: String
-    salesman: String
-    amount: Float
-    currencyCode: String
-    status: ContractStatus
-    contractDate: DateTime
-    deliveryDate: DateTime
-    description: String
+    contractInput: ContractInput!
   ): Contract!
 
   deleteContract(id: ID!): Boolean!
