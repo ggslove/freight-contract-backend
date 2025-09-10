@@ -1,10 +1,8 @@
 package com.freight.contract.config;
 
-import com.freight.contract.entity.Currency;
-import com.freight.contract.entity.Role;
-import com.freight.contract.entity.User;
-import com.freight.contract.entity.UserStatus;
+import com.freight.contract.entity.*;
 import com.freight.contract.repository.CurrencyRepository;
+import com.freight.contract.repository.RoleRepository;
 import com.freight.contract.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
@@ -14,6 +12,7 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.math.BigDecimal;
+import java.util.Arrays;
 
 @Configuration
 @RequiredArgsConstructor
@@ -23,11 +22,44 @@ public class DataInitializer {
     private final UserRepository userRepository;
     private final CurrencyRepository currencyRepository;
     private final PasswordEncoder passwordEncoder;
+    private final RoleRepository roleRepository;
 
     @Bean
     CommandLineRunner initDatabase() {
         return args -> {
             System.out.println("密码编码器类型: " + passwordEncoder.getClass().getName());
+            final String ROLE_ADMIN = "ROLE_ADMIN";
+            final String ROLE_MANAGER = "ROLE_MANAGER";
+            final String ROLE_FINANCE = "ROLE_FINANCE";
+            Role adminRole = null;
+            Role managerRole = null;
+            Role financeRole = null;
+            if (!roleRepository.existsByCode(ROLE_ADMIN)) {
+                adminRole = new Role();
+                adminRole.setName("管理员");
+                adminRole.setCode("ROLE_ADMIN");
+                adminRole.setDescription("系统管理员角色");
+                roleRepository.save(adminRole);
+            }
+            if (!roleRepository.existsByCode(ROLE_MANAGER)) {
+                // 创建业务经理角色
+                managerRole = new Role();
+                managerRole.setName("业务经理角色");
+                managerRole.setCode(ROLE_MANAGER);
+                managerRole.setDescription("业务经理角色");
+                roleRepository.save(managerRole);
+            }
+
+
+            if (!roleRepository.existsByCode(ROLE_FINANCE)) {
+                // 创建业务经理角色
+                financeRole = new Role();
+                financeRole.setName("业务经理角色");
+                financeRole.setCode(ROLE_FINANCE);
+                financeRole.setDescription("业务经理角色");
+                roleRepository.save(financeRole);
+            }
+
 
             // 创建管理员用户
             if (!userRepository.existsByUsername("admin")) {
@@ -41,13 +73,16 @@ public class DataInitializer {
                 System.out.println("Admin编码密码: " + encodedPassword);
                 System.out.println("Admin密码匹配测试: " + passwordEncoder.matches(rawPassword, encodedPassword));
                 admin.setPassword(encodedPassword);
-                admin.setRole(Role.ADMIN);
+                UserRole userRoleAdmin = new UserRole();
+                userRoleAdmin.setRole(adminRole);
+                userRoleAdmin.setUser(admin);
+                admin.setUserRoles(Arrays.asList(userRoleAdmin));
                 admin.setStatus(UserStatus.ENABLED);
                 userRepository.save(admin);
                 System.out.println("管理员用户创建成功: admin/admin123");
             }
 
-            // 创建测试经理用户
+            // 创建普通用户
             if (!userRepository.existsByUsername("manager")) {
                 User manager = new User();
                 manager.setUsername("manager");
@@ -58,7 +93,10 @@ public class DataInitializer {
                 System.out.println("Manager原始密码: " + rawPassword);
                 System.out.println("Manager编码密码: " + encodedPassword);
                 manager.setPassword(encodedPassword);
-                manager.setRole(Role.MANAGER);
+                UserRole userRoleManager = new UserRole();
+                userRoleManager.setRole(managerRole);
+                userRoleManager.setUser(manager);
+                manager.setUserRoles(Arrays.asList(userRoleManager));
                 manager.setStatus(UserStatus.ENABLED);
                 userRepository.save(manager);
                 System.out.println("业务经理用户创建成功: manager/manager123");
@@ -75,7 +113,12 @@ public class DataInitializer {
                 System.out.println("Finance原始密码: " + rawPassword);
                 System.out.println("Finance编码密码: " + encodedPassword);
                 finance.setPassword(encodedPassword);
-                finance.setRole(Role.FINANCE);
+
+                UserRole userRoleFinance = new UserRole();
+                userRoleFinance.setRole(financeRole);
+                userRoleFinance.setUser(finance);
+                finance.setUserRoles(Arrays.asList(userRoleFinance));
+
                 finance.setStatus(UserStatus.ENABLED);
                 userRepository.save(finance);
                 System.out.println("财务人员用户创建成功: finance/finance123");

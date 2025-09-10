@@ -44,7 +44,8 @@ public class UserResolver {
         user.setEmail(email);
         user.setRealName(realName);
         user.setPhone(phone);
-        user.setRole(com.freight.contract.entity.Role.valueOf(role));
+
+       // user.setRole(com.freight.contract.entity.Role.valueOf(role));
         user.setStatus(com.freight.contract.entity.UserStatus.valueOf(status));
         return userService.createUser(user, password);
     }
