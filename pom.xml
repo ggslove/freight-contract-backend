@@ -41,6 +41,13 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-security</artifactId>
         </dependency>
+
+        <!-- ANTLR Version Management to resolve conflicts -->
+        <dependency>
+            <groupId>org.antlr</groupId>
+            <artifactId>antlr4-runtime</artifactId>
+            <version>4.9.3</version>
+        </dependency>
         
         <!-- Database -->
         <dependency>
@@ -85,8 +92,10 @@
         <dependency>
             <groupId>com.graphql-java</groupId>
             <artifactId>graphql-java-extended-scalars</artifactId>
-            <version>24.0</version>
+            <version>19.1</version>
         </dependency>
+
+        <!-- 移除冲突的graphql-java-tools，使用spring-boot-starter-graphql提供的版本 -->
         
         <dependency>
             <groupId>org.apache.poi</groupId>
