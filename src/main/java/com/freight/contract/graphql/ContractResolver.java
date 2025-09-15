@@ -4,6 +4,7 @@ import com.freight.contract.entity.Contract;
 import com.freight.contract.entity.Payable;
 import com.freight.contract.entity.Receivable;
 import com.freight.contract.eunus.ContractStatus;
+import com.freight.contract.graphql.dto.ContractConnection;
 import com.freight.contract.mapper.ContractMapper;
 import com.freight.contract.mapper.PayableMapper;
 import com.freight.contract.mapper.ReceivableMapper;
@@ -75,6 +76,16 @@ public class ContractResolver {
         return contractService.updateContract(id, contract).orElse(null);
     }
 
+    /**
+     * GraphQL 合同分页查询
+     * @param first 每页条数（必填）
+     * @param after 游标（可选，用于加载下一页，首次查询可不传）
+     * @return 分页结果（包含数据和分页元信息）
+     */
+    public ContractConnection contracts(int first, String after) {
+        // 调用服务层处理分页逻辑（after 为空时查询第一页）
+        return contractService.getContractConnection(first, after);
+    }
     @MutationMapping
     public Boolean deleteContract(@Argument Long id) {
         return contractService.deleteContract(id);

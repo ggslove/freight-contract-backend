@@ -29,5 +29,28 @@ input ContractInput{
   remarks: String
 }
 
+# 页信息类型（标准结构）
+type PageInfo {
+  hasNextPage: Boolean!       # 是否有下一页
+  hasPreviousPage: Boolean!   # 是否有上一页
+  startCursor: String         # 首条记录游标
+  endCursor: String           # 末条记录游标
+}
+
+# 合同边缘类型（包含节点和游标）
+type ContractEdge {
+  node: Contract!             # 合同实体
+  cursor: String!             # 游标（通常使用 ID 或时间戳编码）
+}
+
+# 合同连接类型（分页结果容器）
+type ContractConnection {
+  edges: [ContractEdge!]!     # 边缘列表
+  pageInfo: PageInfo!         # 分页元信息
+  totalCount: Int!            # 总记录数（可选）
+}
+
+
+
 
 

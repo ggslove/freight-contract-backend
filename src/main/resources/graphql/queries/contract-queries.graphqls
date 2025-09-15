@@ -1,7 +1,10 @@
 extend type Query {
   # Contract queries
-  contracts: [Contract!]!
   contract(id: ID!): Contract
   contractsByStatus(status: ContractStatus!): [Contract!]!
   searchContracts(keyword: String!): [Contract!]!
+  # 查询类型扩展（添加分页查询）
+  # 分页查询合同列表（first: 每页条数，after: 游标）
+  contracts(first: Int!, after: String): ContractConnection!
+
 }
