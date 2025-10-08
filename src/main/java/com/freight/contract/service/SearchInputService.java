@@ -1,7 +1,7 @@
 package com.freight.contract.service;
 
 
-import com.freight.contract.controller.req.SearchReq;
+import com.freight.contract.graphql.SearchInput;
 import com.freight.contract.exceptions.SqlOptException;
 import com.freight.contract.utils.SpringContextUtils;
 import com.freight.contract.utils.TimeFormatUtil;
@@ -10,15 +10,16 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 import javax.persistence.criteria.*;
 import java.util.*;
 
-public class SearchReqService {
+@Service
+public class SearchInputService {
 
     public static final String DOT = ".";
-
 
     public enum SqlOpt {
         $like, $eq, $neq, $gt, $lt, $isNull, $isNotNull, $isTrue, $isFalse, $in;
@@ -34,33 +35,33 @@ public class SearchReqService {
     }
 
     //RequestParam 用form表单提交
-    public Page<?> pageSearch(SearchReq searchReq, Pageable pageable, Sort sort) {
-        String entityName = searchReq.getEntityName();
-        Specification spec = getSpecification(sort, searchReq);
+    public Page<?> pageSearch(SearchInput searchInput, Pageable pageable, Sort sort) {
+        String entityName = searchInput.getEntityName();
+        Specification spec = getSpecification(sort, searchInput);
         Object bean = SpringContextUtils.getBean(entityName + "Repository");
         Assert.isTrue(bean != null, String.format("spring中没有找到%sRepository接口类", entityName));
         Assert.isTrue(bean instanceof JpaSpecificationExecutor, String.format("spring中%sRepository不是JpaSpecificationExecutor类型接口", entityName));
+        // ((JpaSpecificationExecutor) bean).count(spec);
         return ((JpaSpecificationExecutor) bean).findAll(spec, pageable);
     }
 
-    public List<?> search(SearchReq searchReq, Sort sort) {
-        String entityName = searchReq.getEntityName();
-        Specification spec = getSpecification(sort, searchReq);
+
+    public List<?> search(SearchInput searchInput, Sort sort) {
+        String entityName = searchInput.getEntityName();
+        Specification spec = getSpecification(sort, searchInput);
         Object bean = SpringContextUtils.getBean(entityName + "Repository");
         Assert.isTrue(bean != null, String.format("spring中没有找到%sRepository接口类", entityName));
         Assert.isTrue(bean instanceof JpaSpecificationExecutor, String.format("spring中%sRepository不是JpaSpecificationExecutor类型接口", entityName));
         return ((JpaSpecificationExecutor) bean).findAll(spec);
     }
 
-    private Specification getSpecification(Sort sort, SearchReq searchReq) {
-        Set<String> keys = searchReq.keySet();
-        return (Specification) (root, query, criteriaBuilder) -> {
+    private Specification getSpecification(Sort sort, SearchInput searchInput) {
+        return (root, query, criteriaBuilder) -> {
             List<Predicate> predicates = new ArrayList<Predicate>();
-            keys.stream().forEach(key -> {
-                if (!key.equalsIgnoreCase(searchReq.ENTITY_NAME) && !key.equalsIgnoreCase(searchReq.REL_SORT_NAME)) {
-                    predicates.add(keyToPredicate(key, searchReq.get(key), root, criteriaBuilder));
-                }
+            searchInput.getParams().stream().forEach(param -> {
+                predicates.add(keyToPredicate(param.getKey(), param.getValue(), root, criteriaBuilder));
             });
+
             sort.forEach(order -> {
                 if (order.getDirection() == Sort.Direction.ASC) {
                     query.orderBy(criteriaBuilder.asc(root.get(order.getProperty())));
@@ -68,8 +69,8 @@ public class SearchReqService {
                     query.orderBy(criteriaBuilder.desc(root.get(order.getProperty())));
                 }
             });
-            if (searchReq.get(searchReq.REL_SORT_NAME) != null) {
-                String orderByValue = searchReq.get(searchReq.REL_SORT_NAME);
+            if (searchInput.getRelSortName() != null) {
+                String orderByValue = searchInput.getRelSortName();
                 List<Order> orders = new ArrayList<>();
                 query.groupBy(root);
                 if (orderByValue.indexOf(",") != -1) {//多个排序
@@ -79,7 +80,6 @@ public class SearchReqService {
                 } else {
                     orders.add(doOrderByToken(root, criteriaBuilder, orderByValue));
                 }
-
                 query.orderBy(orders);
             }
             return criteriaBuilder.and(predicates.toArray(new Predicate[]{}));
@@ -117,7 +117,6 @@ public class SearchReqService {
         String sqlOptStr = key.substring(key.lastIndexOf(DOT) + 1, key.length());
         SqlOpt sqlOpt = SqlOpt.valueOf(sqlOptStr);
         Assert.isTrue(sqlOpt != null, String.format("%s参数最后位%s,没有对应枚举类型", key, sqlOptStr));
-
         //a.b.c.d
         //当有join时
         Expression expression = null;
@@ -184,13 +183,13 @@ public class SearchReqService {
     }
 
 
-    private Object getEnumValue(Class clzz, String value) {
-        for (Object obj : clzz.getEnumConstants()) {
+    private Object getEnumValue(Class clazz, String value) {
+        for (Object obj : clazz.getEnumConstants()) {
             if (obj.toString().equalsIgnoreCase(value)) {
                 return obj;
             }
         }
-        throw new SqlOptException(String.format("类 %s 没有 %s的枚举对象", clzz, value));
+        throw new SqlOptException(String.format("类 %s 没有 %s的枚举对象", clazz, value));
     }
 
     private TimeFormatUtil timeFormatUtil = new TimeFormatUtil();

@@ -30,10 +30,6 @@ public class ContractResolver {
     @Autowired
     private ReceivableMapper receivableMapper;
 
-    @QueryMapping
-    public List<Contract> contracts() {
-        return contractService.getAllContracts();
-    }
 
     @QueryMapping
     public Contract contract(@Argument Long id) {
@@ -78,14 +74,22 @@ public class ContractResolver {
 
     /**
      * GraphQL 合同分页查询
-     * @param first 每页条数（必填）
-     * @param after 游标（可选，用于加载下一页，首次查询可不传）
+     *
+     * @param first  每页条数（必填）
+     * @param after  游标（可选，用于加载下一页，首次查询可不传）
+     * @param filter 筛选条件（可选）
      * @return 分页结果（包含数据和分页元信息）
      */
-    public ContractConnection contracts(int first, String after) {
-        // 调用服务层处理分页逻辑（after 为空时查询第一页）
-        return contractService.getContractConnection(first, after);
+    @QueryMapping
+    public ContractConnection contracts(
+            @Argument int first,
+            @Argument String after,
+            @Argument("filter") ContractQueryInput filter,
+            @Argument String sortField
+    ) {
+        return contractService.getContractConnection(first, after, filter, sortField);
     }
+
     @MutationMapping
     public Boolean deleteContract(@Argument Long id) {
         return contractService.deleteContract(id);

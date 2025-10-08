@@ -42,7 +42,6 @@ public class Contract {
     //备注
     @Column(name = "remarks", columnDefinition = "TEXT")
     private String remarks;
-
     @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false)
     private ContractStatus status;
