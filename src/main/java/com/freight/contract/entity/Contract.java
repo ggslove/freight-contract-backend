@@ -39,12 +39,15 @@ public class Contract {
     //开航日期 Date of Sailing
     @Column(name = "date_of_sailing")
     private LocalDate dateOfSailing;
+    @Column(name = "eta")// 到港日期 ETA,Estimated Time of Arrival
+    private LocalDate eta;
     //备注
     @Column(name = "remarks", columnDefinition = "TEXT")
     private String remarks;
     @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false)
     private ContractStatus status;
+
 
     @OneToMany(mappedBy = "contract", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Receivable> receivables;

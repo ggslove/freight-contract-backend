@@ -7,8 +7,9 @@ type Contract {
   invoiceNo:String
   quantity: String!
   status: ContractStatus
-  dateOfReceipt:Date!
-  dateOfSailing:Date!
+  dateOfReceipt:Date
+  dateOfSailing:Date
+  eta:Date
   remarks: String
   receivables: [Receivable!]!
   payables: [Payable!]!
@@ -24,8 +25,9 @@ input ContractInput{
   invoiceNo:String
   quantity: String!
   status: ContractStatus!
-  dateOfReceipt:Date!
-  dateOfSailing:Date!
+  dateOfReceipt:Date
+  dateOfSailing:Date
+  eta:Date
   remarks: String
 }
 
