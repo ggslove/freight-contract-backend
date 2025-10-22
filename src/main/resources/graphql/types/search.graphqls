@@ -1,0 +1,8 @@
+input SearchParam {
+  key: String!
+  value: String!  # GraphQL 不支持 Object 类型，需要指定具体类型
+}
+
+input SearchInput {
+  params: [SearchParam!]!
+}

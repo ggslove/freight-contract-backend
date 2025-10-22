@@ -52,12 +52,18 @@ type ContractConnection {
   totalCount: Int!            # 总记录数（可选）
 }
 
+type ContractStats {
+  status: ContractStatus!
+  count: Int!
+}
+
 input ContractQueryInput{
   searchTerm: String
   status: ContractStatus
   startDate: DateTime
   endDate: DateTime
 }
+
 
 
 

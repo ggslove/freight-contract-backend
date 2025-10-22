@@ -3,10 +3,7 @@ package com.freight.contract.service;
 import com.freight.contract.entity.Contract;
 import com.freight.contract.eunus.ContractStatus;
 import com.freight.contract.graphql.ContractQueryInput;
-import com.freight.contract.graphql.dto.ContractConnection;
-import com.freight.contract.graphql.dto.ContractEdge;
-import com.freight.contract.graphql.dto.CursorInfo;
-import com.freight.contract.graphql.dto.PageInfo;
+import com.freight.contract.graphql.dto.*;
 import com.freight.contract.repository.ContractRepository;
 import com.freight.contract.specification.ContractSpecifications;
 import org.springframework.beans.BeanUtils;
@@ -18,6 +15,12 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Base64;
@@ -127,6 +130,9 @@ public class ContractService {
     }
 
 
+    @PersistenceContext
+    private EntityManager entityManager;
+
     /**
      * 游标解码（Base64 字符串 -> CursorInfo）
      */
@@ -233,4 +239,28 @@ public class ContractService {
     }
 
 
+    public List<ContractStats> getContractStats(ContractQueryInput filter) {
+        CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+        CriteriaQuery<ContractStats> query = cb.createQuery(ContractStats.class);
+        Root<Contract> root = query.from(Contract.class);
+
+        Specification<Contract> spec = null;
+        if (filter != null && filter.hasFilters()) {
+            spec = ContractSpecifications.withFilter(
+                    filter.getSearchTerm(),
+                    filter.getStatus(),
+                    filter.getStartDate(),
+                    filter.getEndDate()
+            );
+            javax.persistence.criteria.Predicate predicate = spec.toPredicate(root, query, cb);
+            if (predicate != null) {
+                query.where(predicate); // 动态拼接 WHERE 条件（包含原需求中的 "spec" 筛选）
+            }
+        }
+        query.multiselect(
+                cb.count(root), // 统计数量（COUNT(*)）
+                root.get("status") // 分组字段（status）
+        ).groupBy(root.get("status")); // 按 status 分组
+        return entityManager.createQuery(query).getResultList();
+    }
 }

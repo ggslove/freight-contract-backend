@@ -5,6 +5,7 @@ import com.freight.contract.entity.Payable;
 import com.freight.contract.entity.Receivable;
 import com.freight.contract.eunus.ContractStatus;
 import com.freight.contract.graphql.dto.ContractConnection;
+import com.freight.contract.graphql.dto.ContractStats;
 import com.freight.contract.mapper.ContractMapper;
 import com.freight.contract.mapper.PayableMapper;
 import com.freight.contract.mapper.ReceivableMapper;
@@ -44,6 +45,11 @@ public class ContractResolver {
     @QueryMapping
     public List<Contract> searchContracts(@Argument String keyword) {
         return contractService.searchContracts(keyword);
+    }
+
+    @QueryMapping
+    public List<ContractStats> contractStats(@Argument ContractQueryInput filter) {
+        return contractService.getContractStats(filter);
     }
 
 

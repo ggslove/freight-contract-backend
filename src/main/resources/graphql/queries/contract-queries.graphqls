@@ -12,4 +12,6 @@ extend type Query {
     sort: String
   ): ContractConnection!
 
+  contractStats(filter: ContractQueryInput): [ContractStats!]!
+
 }
