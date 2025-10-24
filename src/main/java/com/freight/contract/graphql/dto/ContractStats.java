@@ -13,6 +13,4 @@ import lombok.Setter;
 public class ContractStats {
     private long count;
     private ContractStatus status;
-
-
 }
